@@ -8,7 +8,13 @@ MY_BUCKET = 'mock_bucket'
 MY_PREFIX = 's3_mock_folder'
 MY_LOCAL_DIR = 'local_dir'
 def download_json_files(bucket, prefix, local_dir):
-    bucket = boto3.resource("s3").Bucket(bucket) # initialize resource
+    s3 = boto3.resource(
+            "s3",
+            region_name="eu-west-1",
+            aws_access_key_id="fake_access_key",
+            aws_secret_access_key="fake_secret_key",
+            ) # initialize resource
+    bucket = s3.Bucket(MY_BUCKET)
     objects = bucket.objects.filter(Prefix=prefix)
     print(objects)
     keys = [obj.key for obj in objects if obj.key.endswith(".json")] # retrieve any item that has the .json extension
